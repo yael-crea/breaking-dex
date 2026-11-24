@@ -1,0 +1,17 @@
+# Exécutables Go
+*.exe
+breakingbad
+breaking-bad
+
+# Données locales (favoris propres à chaque installation)
+favoris.json
+favoris.json.tmp
+
+# Variables d'environnement / secrets
+.env
+
+# Fichiers d'éditeur et système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
