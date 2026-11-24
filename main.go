@@ -30,6 +30,10 @@ func main() {
 	mux.HandleFunc("GET /recherche", recherche)
 	mux.HandleFunc("GET /personnages", personnages)
 	mux.HandleFunc("GET /personnages/{id}", personnage)
+	mux.HandleFunc("GET /favoris", favoris)
+	mux.HandleFunc("POST /favoris/ajouter", ajouterAuxFavoris)
+	mux.HandleFunc("POST /favoris/supprimer", supprimerDesFavoris)
+	mux.HandleFunc("POST /favoris/vider", viderLesFavoris)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.HandleFunc("/", pageIntrouvable)
 

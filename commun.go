@@ -24,7 +24,8 @@ type Base struct {
 }
 
 func nouvelleBase(titre, actif string) Base {
-	return Base{Titre: titre, Actif: actif}
+	favoris, _ := listeFavoris()
+	return Base{Titre: titre, Actif: actif, NbFavoris: len(favoris)}
 }
 
 // afficher exécute le template dans un tampon avant de l'envoyer :
