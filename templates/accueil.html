@@ -1,0 +1,56 @@
+{{define "accueil"}}{{template "debut" .}}
+<section class="hero">
+  {{with .Serie.Image}}<img class="affiche" src="{{.Medium}}" alt="Affiche de Breaking Bad">{{end}}
+  <div>
+    <h1>{{.Serie.Name}}</h1>
+    <p class="etiquettes">
+      {{range .Serie.Genres}}<span class="etiquette">{{.}}</span>{{end}}
+      {{with .Serie.Network}}<span class="etiquette">{{.Name}}</span>{{end}}
+    </p>
+    <p class="chiffres">
+      <span><strong>★ {{.Serie.Rating.Average}}</strong> / 10</span>
+      <span><strong>{{len .Saisons}}</strong> saisons</span>
+      <span><strong>{{.NbEpisodes}}</strong> épisodes</span>
+    </p>
+    <p>{{.Serie.Resume}}</p>
+    <p>Un professeur de chimie d'Albuquerque, atteint d'un cancer, se lance dans la fabrication de méthamphétamine pour assurer l'avenir de sa famille. Breaking Dex te permet d'explorer tous les épisodes, de retrouver les personnages et de garder tes épisodes préférés.</p>
+    <a class="bouton principal" href="/episodes">Explorer les épisodes →</a>
+  </div>
+</section>
+
+<h2>Les saisons</h2>
+<div class="grille saisons">
+  {{range .Saisons}}
+  <a class="carte saison" href="/episodes?saison={{.Number}}">
+    {{with .Image}}<img src="{{.Medium}}" alt="Affiche de la saison" loading="lazy">{{end}}
+    <h3>Saison {{.Number}}</h3>
+    <p>{{.EpisodeOrder}} épisodes</p>
+    <p class="discret">{{.Debut}} → {{.Fin}}</p>
+  </a>
+  {{end}}
+</div>
+
+<h2>Les épisodes les mieux notés</h2>
+<div class="grille episodes">
+  {{range .MeilleursEps}}
+  <a class="carte episode" href="/episodes/{{.ID}}">
+    {{if .Vignette}}<img class="vignette" src="{{.Vignette}}" alt="" loading="lazy">{{end}}
+    <p class="code">{{.Code}}</p>
+    <h3>{{.Name}}</h3>
+    <p class="note">★ {{.Rating.Average}}</p>
+  </a>
+  {{end}}
+</div>
+
+<h2>Les personnages principaux</h2>
+<div class="grille personnages">
+  {{range .Casting}}
+  <a class="carte personnage" href="/personnages/{{.Person.ID}}">
+    {{if .Portrait}}<img class="portrait" src="{{.Portrait}}" alt="{{.Character.Name}}" loading="lazy">{{end}}
+    <h3>{{.Character.Name}}</h3>
+    <p class="discret">{{.Person.Name}}</p>
+  </a>
+  {{end}}
+</div>
+<p class="centre"><a class="bouton" href="/personnages">Voir tous les personnages →</a></p>
+{{template "fin" .}}{{end}}
