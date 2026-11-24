@@ -13,7 +13,7 @@
       <dt>Durée</dt><dd>{{if .Episode.Runtime}}{{.Episode.Runtime}} min{{else}}inconnue{{end}}</dd>
       <dt>Note</dt><dd>{{if .Episode.Rating.Average}}★ {{.Episode.Rating.Average}} / 10{{else}}pas encore notée{{end}}</dd>
     </dl>
-    <h2>Résumé (en anglais)</h2>
+    <h2>Résumé</h2>
     <p>{{if .Episode.Resume}}{{.Episode.Resume}}{{else}}Aucun résumé disponible.{{end}}</p>
 
     {{if .Favori}}
