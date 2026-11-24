@@ -1,0 +1,445 @@
+/* Breaking Dex — thème inspiré de la série : vert "tableau périodique", désert et cristal bleu. */
+
+:root {
+  --fond: #0f1a12;
+  --carte: #1a2b1e;
+  --bordure: #2a4430;
+  --vert: #2f7a3c;
+  --vert-clair: #7fd18b;
+  --texte: #e8efe9;
+  --discret: #9fb5a3;
+  --jaune: #f2c94c;
+  --bleu: #5ec8e5;
+  --rouge: #d6584a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+  margin: 0;
+  line-height: 1.5;
+}
+
+a { color: var(--bleu); }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h1 { font-size: 2rem; margin: 0.5rem 0 1rem; }
+h2 { margin-top: 2.5rem; }
+
+.element {
+  display: inline-block;
+  background: var(--vert);
+  border: 2px solid var(--vert-clair);
+  padding: 0 0.3rem;
+  margin-right: 2px;
+  color: white;
+}
+
+/* ---------- Header ---------- */
+
+.entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding: 1rem 1.5rem;
+  background: #0a120c;
+  border-bottom: 1px solid var(--bordure);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--texte);
+  text-decoration: none;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.menu a {
+  color: var(--texte);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+}
+
+.menu a:hover { background: var(--carte); }
+.menu a.actif { background: var(--vert); }
+
+.compteur {
+  background: var(--jaune);
+  color: #222;
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.barre-recherche {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+  flex: 1 1 260px;
+  max-width: 420px;
+}
+
+.barre-recherche input { flex: 1; }
+
+/* ---------- Formulaires et boutons ---------- */
+
+input, select {
+  background: var(--carte);
+  color: var(--texte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  min-width: 0;
+}
+
+button, .bouton {
+  display: inline-block;
+  background: transparent;
+  color: var(--texte);
+  border: 1px solid var(--vert);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover, .bouton:hover { background: var(--carte); }
+
+.barre-recherche button, .bouton.principal {
+  background: var(--vert);
+  border-color: var(--vert-clair);
+}
+
+.bouton.favori {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.4rem;
+}
+
+.bouton.favori.actif {
+  border-color: var(--jaune);
+  color: var(--jaune);
+}
+
+.bouton.danger {
+  border-color: var(--rouge);
+  color: #ffb3aa;
+}
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtres label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--discret);
+}
+
+.filtres label.large { flex: 1 1 300px; }
+
+.filtres .actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ---------- Grilles et cartes ---------- */
+
+.grille {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.grille.personnages { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.grille.saisons { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+
+.carte {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 0.9rem;
+  color: var(--texte);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+a.carte:hover, .carte .lien-carte:hover h3 {
+  border-color: var(--vert-clair);
+}
+
+a.carte:hover { transform: translateY(-3px); }
+
+.carte h3 { margin: 0; font-size: 1.05rem; }
+.carte p { margin: 0; }
+
+.lien-carte {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.carte.episode .infos {
+  display: flex;
+  gap: 1rem;
+  color: var(--discret);
+  font-size: 0.9rem;
+  margin: 0.2rem 0 0.5rem;
+  flex: 1;
+}
+
+.vignette {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--fond);
+}
+
+.vignette.vide {
+  display: grid;
+  place-items: center;
+  color: var(--discret);
+}
+
+.carte.personnage { text-align: center; align-items: center; }
+
+.portrait {
+  width: 130px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+}
+
+.carte.saison img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.code { color: var(--vert-clair); font-size: 0.85rem; font-weight: bold; }
+.note { color: var(--jaune); }
+.discret { color: var(--discret); font-size: 0.9rem; }
+.centre { text-align: center; margin-top: 1.5rem; }
+.resultat { color: var(--discret); }
+
+.vide-message {
+  background: var(--carte);
+  border: 1px dashed var(--bordure);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ---------- Accueil ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.hero h1 { font-size: 3rem; margin: 0; }
+.affiche { width: 100%; border-radius: 12px; }
+
+.etiquettes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.etiquette {
+  border: 1px solid var(--vert-clair);
+  color: var(--vert-clair);
+  border-radius: 999px;
+  padding: 0.1rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.chiffres { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.chiffres strong { color: var(--jaune); font-size: 1.3rem; }
+
+/* ---------- Pages détail ---------- */
+
+.fil { color: var(--discret); }
+
+.detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.grande-image { width: 100%; border-radius: 12px; }
+.portrait-acteur { max-width: 320px; }
+
+.fiche {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.2rem;
+  background: var(--carte);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.fiche dt { color: var(--discret); }
+.fiche dd { margin: 0; }
+
+.invites {
+  columns: 2 260px;
+  color: var(--discret);
+}
+
+.invites strong { color: var(--texte); }
+
+.voisins {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Pagination ---------- */
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+}
+
+.pagination a, .pagination span {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--bordure);
+  text-decoration: none;
+  color: var(--texte);
+}
+
+.pagination a:hover { background: var(--carte); }
+
+.page-active {
+  background: var(--vert);
+  border-color: var(--vert-clair) !important;
+}
+
+/* ---------- Favoris ---------- */
+
+.liste-favoris {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.liste-favoris li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 0.7rem;
+}
+
+.liste-favoris a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--texte);
+  text-decoration: none;
+}
+
+.liste-favoris img {
+  width: 140px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.liste-favoris a > span { display: flex; flex-direction: column; }
+
+/* ---------- À propos et erreurs ---------- */
+
+.texte { max-width: 800px; }
+
+.faq details {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.faq summary { cursor: pointer; font-weight: bold; }
+
+code {
+  background: #0a120c;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  color: var(--vert-clair);
+}
+
+.page-erreur { text-align: center; padding: 3rem 1rem; }
+.code-erreur { font-size: 4rem; font-weight: bold; margin: 0; }
+
+/* ---------- Footer ---------- */
+
+.pied {
+  text-align: center;
+  color: #6f8573;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--bordure);
+  padding: 1.5rem 1rem;
+}
+
+.pied a { color: var(--discret); }
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .hero, .detail { grid-template-columns: 1fr; }
+  .hero .affiche { max-width: 220px; }
+  .barre-recherche { margin-left: 0; max-width: none; }
+  .liste-favoris li { flex-direction: column; align-items: stretch; }
+  .liste-favoris img { width: 100px; }
+}
