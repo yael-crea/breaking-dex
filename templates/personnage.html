@@ -1,0 +1,18 @@
+{{define "personnage"}}{{template "debut" .}}
+<p class="fil"><a href="/personnages">Personnages</a> › {{.Acteur.Name}}</p>
+<article class="detail">
+  {{if .Acteur.Photo}}<img class="grande-image portrait-acteur" src="{{.Acteur.Photo}}" alt="Photo de {{.Acteur.Name}}">{{end}}
+  <div>
+    <h1>{{.Acteur.Name}}</h1>
+    <dl class="fiche">
+      <dt>Rôle{{if gt (len .Roles) 1}}s{{end}}</dt>
+      <dd>{{range $i, $r := .Roles}}{{if $i}}, {{end}}{{$r.Name}}{{end}}</dd>
+      <dt>Naissance</dt><dd>{{.Acteur.Naissance}}</dd>
+      {{if .Acteur.Deathday}}<dt>Décès</dt><dd>{{.Acteur.Deces}}</dd>{{end}}
+      <dt>Genre</dt><dd>{{.Acteur.Genre}}</dd>
+      <dt>Pays</dt><dd>{{.Acteur.NomPays}}</dd>
+    </dl>
+    <p><a class="bouton" href="/recherche?q={{(index .Roles 0).Name}}">Rechercher « {{(index .Roles 0).Name}} » dans les épisodes</a></p>
+  </div>
+</article>
+{{template "fin" .}}{{end}}

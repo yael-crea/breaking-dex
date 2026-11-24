@@ -1,0 +1,13 @@
+{{define "personnages"}}{{template "debut" .}}
+<h1>Les personnages</h1>
+<p class="resultat">{{len .Casting}} personnages principaux. Clique sur une carte pour voir la fiche de l'acteur.</p>
+<div class="grille personnages">
+  {{range .Casting}}
+  <a class="carte personnage" href="/personnages/{{.Person.ID}}">
+    {{if .Portrait}}<img class="portrait" src="{{.Portrait}}" alt="{{.Character.Name}}" loading="lazy">{{end}}
+    <h3>{{.Character.Name}}</h3>
+    <p class="discret">🎭 {{.Person.Name}}</p>
+  </a>
+  {{end}}
+</div>
+{{template "fin" .}}{{end}}
