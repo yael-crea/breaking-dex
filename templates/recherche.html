@@ -1,0 +1,43 @@
+{{define "recherche"}}{{template "debut" .}}
+<h1>Recherche</h1>
+
+<form class="filtres" action="/recherche" method="get">
+  <label class="large">Rechercher dans les titres, résumés, personnages et acteurs
+    <input type="search" name="q" value="{{.Q}}" placeholder="Ex. : Heisenberg, Jesse, desert…" maxlength="100">
+  </label>
+  <label>Par page
+    <select name="par_page">
+      {{range .ChoixParPage}}<option value="{{.}}" {{if eq . $.Pagination.ParPage}}selected{{end}}>{{.}}</option>{{end}}
+    </select>
+  </label>
+  <div class="actions"><button class="bouton principal" type="submit">Rechercher</button></div>
+</form>
+
+{{if not .Q}}
+<p class="vide-message">Tape un mot-clé pour lancer la recherche.</p>
+{{else}}
+  {{if .Personnages}}
+  <h2>Personnages ({{len .Personnages}})</h2>
+  <div class="grille personnages">
+    {{range .Personnages}}
+    <a class="carte personnage" href="/personnages/{{.Person.ID}}">
+      {{if .Portrait}}<img class="portrait" src="{{.Portrait}}" alt="{{.Character.Name}}" loading="lazy">{{end}}
+      <h3>{{.Character.Name}}</h3>
+      <p class="discret">🎭 {{.Person.Name}}</p>
+    </a>
+    {{end}}
+  </div>
+  {{end}}
+
+  <h2>Épisodes ({{.Pagination.Total}})</h2>
+  {{if .Pagination.Total}}
+  <p class="resultat">Résultats {{.Pagination.Premier}} à {{.Pagination.Dernier}} sur {{.Pagination.Total}} pour « {{.Q}} »</p>
+  <div class="grille episodes">
+    {{range .Episodes}}{{template "carte-episode" (carte . $.Favoris $.URLActuelle)}}{{end}}
+  </div>
+  {{template "pagination" .Pagination}}
+  {{else}}
+  <p class="vide-message">Aucun épisode ne correspond à « {{.Q}} ».</p>
+  {{end}}
+{{end}}
+{{template "fin" .}}{{end}}
