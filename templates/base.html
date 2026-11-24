@@ -1,0 +1,76 @@
+{{/* Morceaux communes à toutes les pages : début (head + header), fin (footer), carte d'épisode et pagination. */}}
+
+{{define "debut"}}<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Titre}} · Breaking Dex</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="entete">
+    <a href="/" class="logo"><span class="element">Br</span>eaking <span class="element">Dex</span></a>
+    <nav class="menu">
+      <a href="/" class="{{if eq .Actif "accueil"}}actif{{end}}">Accueil</a>
+      <a href="/episodes" class="{{if eq .Actif "episodes"}}actif{{end}}">Épisodes</a>
+      <a href="/personnages" class="{{if eq .Actif "personnages"}}actif{{end}}">Personnages</a>
+      <a href="/favoris" class="{{if eq .Actif "favoris"}}actif{{end}}">Favoris <span class="compteur">{{.NbFavoris}}</span></a>
+      <a href="/a-propos" class="{{if eq .Actif "apropos"}}actif{{end}}">À propos</a>
+    </nav>
+    <form class="barre-recherche" action="/recherche" method="get" role="search">
+      <input type="search" name="q" value="{{.Recherche}}" placeholder="Titre, résumé, personnage, acteur…" aria-label="Rechercher" maxlength="100">
+      <button type="submit">Rechercher</button>
+    </form>
+  </header>
+  <main>
+{{end}}
+
+{{define "fin"}}
+  </main>
+  <footer class="pied">
+    <p>Breaking Dex — projet DataDex : fetch &amp; show.</p>
+    <p>Données et images fournies par <a href="https://www.tvmaze.com/api">TVmaze</a> (licence CC BY-SA). Breaking Bad © AMC / Sony Pictures Television.</p>
+  </footer>
+</body>
+</html>
+{{end}}
+
+{{define "carte-episode"}}
+<article class="carte episode">
+  <a href="/episodes/{{.Episode.ID}}" class="lien-carte">
+    {{if .Episode.Vignette}}<img class="vignette" src="{{.Episode.Vignette}}" alt="Image de l'épisode {{.Episode.Name}}" loading="lazy">{{else}}<div class="vignette vide">Pas d'image</div>{{end}}
+    <p class="code">{{.Episode.Code}} · {{.Episode.Date}}</p>
+    <h3>{{.Episode.Name}}</h3>
+  </a>
+  <p class="infos">
+    {{if .Episode.Rating.Average}}<span class="note">★ {{.Episode.Rating.Average}}</span>{{end}}
+    {{if .Episode.Runtime}}<span>⏱ {{.Episode.Runtime}} min</span>{{end}}
+  </p>
+  {{if .Favori}}
+  <form action="/favoris/supprimer" method="post">
+    <input type="hidden" name="id" value="{{.Episode.ID}}">
+    <input type="hidden" name="retour" value="{{.Retour}}">
+    <button class="bouton favori actif" type="submit">★ Retirer des favoris</button>
+  </form>
+  {{else}}
+  <form action="/favoris/ajouter" method="post">
+    <input type="hidden" name="id" value="{{.Episode.ID}}">
+    <input type="hidden" name="retour" value="{{.Retour}}">
+    <button class="bouton favori" type="submit">☆ Ajouter aux favoris</button>
+  </form>
+  {{end}}
+</article>
+{{end}}
+
+{{define "pagination"}}
+{{if gt .Pages 1}}
+<nav class="pagination" aria-label="Pagination">
+  {{if .Precedente}}<a href="{{.Precedente}}">← Précédent</a>{{end}}
+  {{range .Liens}}
+    {{if .Actif}}<span class="page-active" aria-current="page">{{.Numero}}</span>{{else}}<a href="{{.URL}}">{{.Numero}}</a>{{end}}
+  {{end}}
+  {{if .Suivante}}<a href="{{.Suivante}}">Suivant →</a>{{end}}
+</nav>
+{{end}}
+{{end}}
