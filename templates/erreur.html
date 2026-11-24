@@ -1,0 +1,8 @@
+{{define "erreur"}}{{template "debut" .}}
+<section class="page-erreur">
+  <p class="code-erreur"><span class="element">{{.Code}}</span></p>
+  <h1>{{if eq .Code 404}}Page introuvable{{else if eq .Code 400}}Requête invalide{{else if eq .Code 503}}Service indisponible{{else}}Erreur{{end}}</h1>
+  <p>{{.Message}}</p>
+  <p><a class="bouton principal" href="/">Retour à l'accueil</a></p>
+</section>
+{{template "fin" .}}{{end}}
