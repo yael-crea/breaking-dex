@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -134,12 +135,33 @@ func dateFR(s string) string {
 	return t.Format("02/01/2006")
 }
 
-func (s Serie) Resume() string { return texteBrut(s.Summary) }
+// Resume renvoie le résumé en français s'il est traduit, sinon celui de l'API.
+func (s Serie) Resume() string {
+	if traductions.Serie != "" {
+		return traductions.Serie
+	}
+	return texteBrut(s.Summary)
+}
+
+// GenresFR renvoie les genres traduits en français.
+func (s Serie) GenresFR() []string {
+	var genres []string
+	for _, g := range s.Genres {
+		genres = append(genres, traduire(genresFR, g))
+	}
+	return genres
+}
 
 func (s Saison) Debut() string { return dateFR(s.PremiereDate) }
 func (s Saison) Fin() string   { return dateFR(s.EndDate) }
 
-func (e Episode) Resume() string { return texteBrut(e.Summary) }
+// Resume renvoie le résumé en français s'il est traduit, sinon celui de l'API.
+func (e Episode) Resume() string {
+	if r, ok := traductions.Episodes[strconv.Itoa(e.ID)]; ok {
+		return r
+	}
+	return texteBrut(e.Summary)
+}
 func (e Episode) Date() string   { return dateFR(e.Airdate) }
 
 // Code renvoie le code de l'épisode, ex. "S01E05".
@@ -204,7 +226,7 @@ func (p Personne) NomPays() string {
 	if p.Country == nil {
 		return "Non renseigné"
 	}
-	return p.Country.Name
+	return traduire(paysFR, p.Country.Name)
 }
 
 func (p Personne) Photo() string {

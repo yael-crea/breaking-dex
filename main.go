@@ -23,6 +23,8 @@ func main() {
 		log.Fatal("Impossible de charger les templates : ", err)
 	}
 
+	chargerTraductions()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /{$}", accueil)
 	mux.HandleFunc("GET /episodes", collection)

@@ -4,7 +4,7 @@
   <div>
     <h1>{{.Serie.Name}}</h1>
     <p class="etiquettes">
-      {{range .Serie.Genres}}<span class="etiquette">{{.}}</span>{{end}}
+      {{range .Serie.GenresFR}}<span class="etiquette">{{.}}</span>{{end}}
       {{with .Serie.Network}}<span class="etiquette">{{.Name}}</span>{{end}}
     </p>
     <p class="chiffres">
@@ -13,7 +13,7 @@
       <span><strong>{{.NbEpisodes}}</strong> épisodes</span>
     </p>
     <p>{{.Serie.Resume}}</p>
-    <p>Un professeur de chimie d'Albuquerque, atteint d'un cancer, se lance dans la fabrication de méthamphétamine pour assurer l'avenir de sa famille. Breaking Dex te permet d'explorer tous les épisodes, de retrouver les personnages et de garder tes épisodes préférés.</p>
+    <p>Breaking Dex te permet d'explorer tous les épisodes, de retrouver les personnages et de garder tes épisodes préférés.</p>
     <a class="bouton principal" href="/episodes">Explorer les épisodes →</a>
   </div>
 </section>
