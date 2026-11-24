@@ -28,6 +28,8 @@ func main() {
 	mux.HandleFunc("GET /episodes", collection)
 	mux.HandleFunc("GET /episodes/{id}", detail)
 	mux.HandleFunc("GET /recherche", recherche)
+	mux.HandleFunc("GET /personnages", personnages)
+	mux.HandleFunc("GET /personnages/{id}", personnage)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.HandleFunc("/", pageIntrouvable)
 
