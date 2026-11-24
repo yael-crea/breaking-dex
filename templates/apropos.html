@@ -1,0 +1,42 @@
+{{define "apropos"}}{{template "debut" .}}
+<h1>À propos du projet</h1>
+
+<section class="texte">
+  <p><strong>Breaking Dex</strong> est un site réalisé pour le projet <em>DataDex : fetch &amp; show</em>. Il exploite l'API REST gratuite <a href="https://www.tvmaze.com/api">TVmaze</a> pour présenter l'univers de la série Breaking Bad : ses saisons, ses 62 épisodes et ses personnages.</p>
+  <p>Le site est écrit uniquement en Go (bibliothèque standard), HTML et CSS. La recherche, les filtres, la pagination et les favoris sont entièrement gérés côté serveur en Go, sans JavaScript et sans utiliser les fonctions de recherche ou de pagination de l'API.</p>
+
+  <h2>Endpoints utilisés</h2>
+  <ul>
+    <li><code>GET /shows/169</code> : informations de la série (page d'accueil).</li>
+    <li><code>GET /shows/169/seasons</code> : liste des saisons (accueil et filtre par saison).</li>
+    <li><code>GET /shows/169/episodes</code> : collection des épisodes (collection, recherche, filtres, pagination, favoris).</li>
+    <li><code>GET /shows/169/cast</code> : personnages et acteurs principaux.</li>
+    <li><code>GET /episodes/{id}?embed=guestcast</code> : détail d'un épisode avec ses acteurs invités.</li>
+    <li><code>GET /people/{id}</code> : fiche d'un acteur.</li>
+  </ul>
+</section>
+
+<section class="texte faq">
+  <h2>Retour d'expérience (FAQ)</h2>
+
+  <details open>
+    <summary>Quelle a été la principale difficulté et comment l'avez-vous surmontée ?</summary>
+    <p>Trouver une API qui fonctionne vraiment. L'API Breaking Bad la plus connue (<code>breakingbadapi.com</code>) ne répond plus du tout, les copies qu'on trouve en ligne sont instables, et leurs images hébergées sur Fandom renvoient une erreur 403. J'ai testé chaque piste avec des requêtes directes avant de choisir TVmaze, qui contient toute la série, ses épisodes et son casting. Deuxième difficulté : TVmaze ne renvoie ses textes qu'en anglais. J'ai ajouté un fichier <code>donnees/traductions_fr.json</code> qui associe l'identifiant de chaque épisode à son résumé en français. La fonction <code>Resume()</code> l'utilise en priorité et revient au texte de l'API si une traduction manque.</p>
+  </details>
+
+  <details>
+    <summary>De quelle fonctionnalité êtes-vous le plus fier et comment l'avez-vous implémentée ?</summary>
+    <p>Les filtres cumulables combinés à la pagination. La fonction <code>filtrer</code> parcourt les 62 épisodes et ne garde que ceux qui respectent <em>tous</em> les filtres actifs (saison, année, note minimale, durée maximale) ; un filtre à 0 est ignoré. Exemple : « note ≥ 9 » donne 8 épisodes, et « saison 5 + note ≥ 9 » n'en garde plus qu'un, Ozymandias. Ensuite, <code>paginer</code> découpe le résultat selon le nombre choisi (10, 20 ou 30) et recopie les filtres de l'URL dans chaque lien de page : changer de page ne fait donc jamais perdre les filtres.</p>
+  </details>
+
+  <details>
+    <summary>Qu'avez-vous appris sur les API et sur Go, et quelles ressources vous ont le plus aidé ?</summary>
+    <p>Côté API : une API peut disparaître du jour au lendemain, il faut donc toujours gérer les erreurs. Le site distingue un 404 de l'API (ressource inexistante, page 404) d'une panne (page 503), fixe un délai maximum de 10 secondes par requête et garde les données 10 minutes en mémoire pour respecter la limite de TVmaze (environ 20 requêtes par 10 secondes). Côté Go : les routes avec méthode et paramètre (<code>GET /episodes/{id}</code> et <code>r.PathValue</code>), <code>encoding/json</code> avec les tags de structures, <code>html/template</code> avec des morceaux réutilisables (header, footer, carte d'épisode), et <code>sync.Mutex</code> pour que deux visiteurs ne modifient pas <code>favoris.json</code> en même temps. Ressources : la documentation de la bibliothèque standard sur pkg.go.dev, la documentation de TVmaze et la spécification Conventional Commits.</p>
+  </details>
+
+  <details>
+    <summary>Que feriez-vous différemment si c'était à refaire ?</summary>
+    <p>Je vérifierais la disponibilité de l'API (et de ses images) avant tout le reste, ce qui m'aurait évité de partir sur une API morte. J'écrirais aussi des tests unitaires pour <code>filtrer</code>, <code>paginer</code> et la recherche, et je mettrais en place un cache sur disque pour que le site reste consultable plus longtemps quand l'API est hors ligne.</p>
+  </details>
+</section>
+{{template "fin" .}}{{end}}
