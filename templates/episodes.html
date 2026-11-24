@@ -1,0 +1,56 @@
+{{define "episodes"}}{{template "debut" .}}
+<h1>Tous les épisodes</h1>
+
+<form class="filtres" action="/episodes" method="get">
+  <label>Saison
+    <select name="saison">
+      <option value="">Toutes</option>
+      {{range .Saisons}}<option value="{{.Number}}" {{if eq .Number $.Filtres.Saison}}selected{{end}}>Saison {{.Number}}</option>{{end}}
+    </select>
+  </label>
+  <label>Année de diffusion
+    <select name="annee">
+      <option value="">Toutes</option>
+      {{range .Annees}}<option value="{{.}}" {{if eq . $.Filtres.Annee}}selected{{end}}>{{.}}</option>{{end}}
+    </select>
+  </label>
+  <label>Note minimale
+    <select name="note">
+      <option value="">Toutes</option>
+      {{range .NotesMin}}<option value="{{.}}" {{if eq . $.Filtres.NoteMin}}selected{{end}}>★ {{.}} et plus</option>{{end}}
+    </select>
+  </label>
+  <label>Durée maximale
+    <select name="duree">
+      <option value="">Toutes</option>
+      {{range .DureesMax}}<option value="{{.}}" {{if eq . $.Filtres.Duree}}selected{{end}}>{{.}} min ou moins</option>{{end}}
+    </select>
+  </label>
+  <label>Trier par
+    <select name="tri">
+      <option value="diffusion" {{if eq .Filtres.Tri "diffusion"}}selected{{end}}>Ordre de diffusion</option>
+      <option value="note" {{if eq .Filtres.Tri "note"}}selected{{end}}>Meilleure note</option>
+      <option value="titre" {{if eq .Filtres.Tri "titre"}}selected{{end}}>Titre (A → Z)</option>
+    </select>
+  </label>
+  <label>Par page
+    <select name="par_page">
+      {{range .ChoixParPage}}<option value="{{.}}" {{if eq . $.Pagination.ParPage}}selected{{end}}>{{.}}</option>{{end}}
+    </select>
+  </label>
+  <div class="actions">
+    <button class="bouton principal" type="submit">Appliquer</button>
+    <a class="bouton" href="/episodes">Réinitialiser</a>
+  </div>
+</form>
+
+{{if .Pagination.Total}}
+<p class="resultat">Épisodes {{.Pagination.Premier}} à {{.Pagination.Dernier}} sur {{.Pagination.Total}} — page {{.Pagination.Page}} / {{.Pagination.Pages}}</p>
+<div class="grille episodes">
+  {{range .Episodes}}{{template "carte-episode" (carte . $.Favoris $.URLActuelle)}}{{end}}
+</div>
+{{template "pagination" .Pagination}}
+{{else}}
+<p class="vide-message">Aucun épisode ne correspond à ces filtres. <a href="/episodes">Réinitialiser les filtres</a></p>
+{{end}}
+{{template "fin" .}}{{end}}

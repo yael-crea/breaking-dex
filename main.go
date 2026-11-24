@@ -11,6 +11,10 @@ import (
 func main() {
 	// Fonctions utilisables dans les templates.
 	fonctions := template.FuncMap{
+		// carte prépare les données d'une carte d'épisode (épisode + favori ou non + page de retour).
+		"carte": func(e Episode, favoris map[int]bool, retour string) CarteEpisode {
+			return CarteEpisode{Episode: e, Favori: favoris[e.ID], Retour: retour}
+		},
 	}
 	// Les templates sont chargés une seule fois au démarrage : une erreur est détectée tout de suite.
 	var err error
@@ -21,6 +25,8 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /{$}", accueil)
+	mux.HandleFunc("GET /episodes", collection)
+	mux.HandleFunc("GET /episodes/{id}", detail)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.HandleFunc("/", pageIntrouvable)
 

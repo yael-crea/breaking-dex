@@ -1,0 +1,46 @@
+{{define "episode"}}{{template "debut" .}}
+<p class="fil"><a href="/episodes">Épisodes</a> › <a href="/episodes?saison={{.Episode.Season}}">Saison {{.Episode.Season}}</a> › {{.Episode.Code}}</p>
+
+<article class="detail">
+  {{if .Episode.GrandeImage}}<img class="grande-image" src="{{.Episode.GrandeImage}}" alt="Image de l'épisode {{.Episode.Name}}">{{end}}
+  <div>
+    <p class="code">{{.Episode.Code}}</p>
+    <h1>{{.Episode.Name}}</h1>
+    <dl class="fiche">
+      <dt>Saison</dt><dd>{{.Episode.Season}}</dd>
+      <dt>Épisode</dt><dd>{{.Episode.Number}}</dd>
+      <dt>Diffusion</dt><dd>{{.Episode.Date}}</dd>
+      <dt>Durée</dt><dd>{{if .Episode.Runtime}}{{.Episode.Runtime}} min{{else}}inconnue{{end}}</dd>
+      <dt>Note</dt><dd>{{if .Episode.Rating.Average}}★ {{.Episode.Rating.Average}} / 10{{else}}pas encore notée{{end}}</dd>
+    </dl>
+    <h2>Résumé (en anglais)</h2>
+    <p>{{if .Episode.Resume}}{{.Episode.Resume}}{{else}}Aucun résumé disponible.{{end}}</p>
+
+    {{if .Favori}}
+    <form action="/favoris/supprimer" method="post">
+      <input type="hidden" name="id" value="{{.Episode.ID}}">
+      <input type="hidden" name="retour" value="{{.URLActuelle}}">
+      <button class="bouton favori actif" type="submit">★ Retirer des favoris</button>
+    </form>
+    {{else}}
+    <form action="/favoris/ajouter" method="post">
+      <input type="hidden" name="id" value="{{.Episode.ID}}">
+      <input type="hidden" name="retour" value="{{.URLActuelle}}">
+      <button class="bouton favori" type="submit">☆ Ajouter aux favoris</button>
+    </form>
+    {{end}}
+  </div>
+</article>
+
+{{with .Episode.InvitesListe}}
+<h2>Acteurs invités</h2>
+<ul class="invites">
+  {{range .}}<li><strong>{{.Person.Name}}</strong> dans le rôle de {{.Character.Name}}</li>{{end}}
+</ul>
+{{end}}
+
+<nav class="voisins">
+  {{with .Precedent}}<a class="bouton" href="/episodes/{{.ID}}">← {{.Code}} · {{.Name}}</a>{{else}}<span></span>{{end}}
+  {{with .Suivant}}<a class="bouton" href="/episodes/{{.ID}}">{{.Code}} · {{.Name}} →</a>{{end}}
+</nav>
+{{template "fin" .}}{{end}}
