@@ -101,7 +101,7 @@ func collection(w http.ResponseWriter, r *http.Request) {
 	afficher(w, http.StatusOK, "episodes", PageEpisodes{
 		Base:         nouvelleBase("Épisodes", "episodes"),
 		Episodes:     resultats[debut:fin],
-		Favoris:      map[int]bool{},
+		Favoris:      idsFavoris(),
 		Filtres:      f,
 		Saisons:      saisons,
 		Annees:       anneesDisponibles(episodes),
@@ -147,7 +147,7 @@ func detail(w http.ResponseWriter, r *http.Request) {
 	donneesPage := PageEpisode{
 		Base:        nouvelleBase(episode.Name, "episodes"),
 		Episode:     episode,
-		Favori:      false,
+		Favori:      idsFavoris()[id],
 		URLActuelle: r.URL.RequestURI(),
 	}
 	if position > 0 {

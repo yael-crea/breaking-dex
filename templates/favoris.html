@@ -1,0 +1,27 @@
+{{define "favoris"}}{{template "debut" .}}
+<h1>Mes épisodes favoris</h1>
+
+{{if .Favoris}}
+<p class="resultat">{{len .Favoris}} épisode{{if gt (len .Favoris) 1}}s{{end}} en favoris. La liste est enregistrée sur le serveur et partagée par tous les visiteurs.</p>
+<ul class="liste-favoris">
+  {{range .Favoris}}
+  <li>
+    <a href="/episodes/{{.ID}}">
+      {{if .Image}}<img src="{{.Image}}" alt="" loading="lazy">{{end}}
+      <span><span class="code">{{.Code}}</span><strong>{{.Nom}}</strong><span class="discret">Ajouté le {{.AjouteLe.Format "02/01/2006 à 15:04"}}</span></span>
+    </a>
+    <form action="/favoris/supprimer" method="post">
+      <input type="hidden" name="id" value="{{.ID}}">
+      <input type="hidden" name="retour" value="/favoris">
+      <button class="bouton danger" type="submit">Supprimer</button>
+    </form>
+  </li>
+  {{end}}
+</ul>
+<form class="centre" action="/favoris/vider" method="post">
+  <button class="bouton danger" type="submit">Vider toute la liste</button>
+</form>
+{{else}}
+<p class="vide-message">Aucun favori pour le moment. Ajoute des épisodes depuis la <a href="/episodes">liste des épisodes</a>.</p>
+{{end}}
+{{template "fin" .}}{{end}}

@@ -34,7 +34,7 @@ func recherche(w http.ResponseWriter, r *http.Request) {
 	donneesPage := PageRecherche{
 		Base:         nouvelleBase("Recherche", "recherche"),
 		Q:            q,
-		Favoris:      map[int]bool{},
+		Favoris:      idsFavoris(),
 		ChoixParPage: choixParPage,
 		Pagination:   Pagination{ParPage: parPage},
 		URLActuelle:  r.URL.RequestURI(),
