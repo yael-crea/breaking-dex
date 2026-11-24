@@ -36,6 +36,7 @@ func main() {
 	mux.HandleFunc("POST /favoris/ajouter", ajouterAuxFavoris)
 	mux.HandleFunc("POST /favoris/supprimer", supprimerDesFavoris)
 	mux.HandleFunc("POST /favoris/vider", viderLesFavoris)
+	mux.HandleFunc("GET /a-propos", aPropos)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.HandleFunc("/", pageIntrouvable)
 
